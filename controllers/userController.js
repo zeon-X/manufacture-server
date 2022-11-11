@@ -11,9 +11,9 @@ const createUser = async (req, res) => {
   }
 };
 
-//UPDATE
+// update
 const updateUser = async (req, res) => {
-  if (!req.query._id) res.status(500).json({ msg: "provide an User _id" });
+  if (!req.query._id) res.status(400).json({ msg: "_id not provided" });
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.query._id,
@@ -25,6 +25,27 @@ const updateUser = async (req, res) => {
       }
     );
     res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ error: err, msg: "opps..! Error" });
+  }
+};
+
+// update wishlist
+const updateWishlist = async (req, res) => {
+  if (!req.query._id) res.status(500).json({ msg: "provide an User _id" });
+  try {
+    const updatedWishList = await User.findByIdAndUpdate(
+      req.query._id,
+      {
+        $set: {
+          wishlist: req.body,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(updatedWishList);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -103,6 +124,7 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  updateWishlist,
   getAllUsers,
   getUserById,
   getUserStats,

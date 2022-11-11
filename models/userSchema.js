@@ -7,6 +7,9 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    name: {
+      type: String,
+    },
     userId: {
       type: String,
       required: true,
@@ -20,13 +23,20 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      unique: true,
     },
     role: {
       type: String,
       enum: ["admin", "user"],
       default: "user",
     },
+    wishlist: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

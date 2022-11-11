@@ -18,7 +18,7 @@ const reviewRoute = require("./routes/reviewRoute");
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@cluster0.mou1drt.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@cluster0.rqfnhbc.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("database connected...");
@@ -27,12 +27,12 @@ mongoose
     console.log(err);
   });
 
-// app.use("/api/product", productRoute);
-// app.use("/api/auth", authRoute);
-// app.use("/api/user", userRoute);
-// app.use("/api/order", orderRoute);
-// app.use("/api/cart", cartRoute);
-// app.use("/api/review", reviewRoute);
+app.use("/api/product", productRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
+app.use("/api/order", orderRoute);
+app.use("/api/cart", cartRoute);
+app.use("/api/review", reviewRoute);
 
 app.get("/", (req, res) => {
   res.status(200).json({ msg: "Welcome to the menufaturer-server" });

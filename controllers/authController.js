@@ -36,66 +36,79 @@ const loginUser = async (req, res) => {
   }
 };
 
-// update
-const updateUser = async (req, res) => {
-  const _id = req.query._id;
-
-  if (!_id) res.status(400).json({ msg: "_id not provided" });
-
+const loginOrRegister = async (req, res) => {
+  const email = req.body.email;
+  const userId = req.body.userId;
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.query._id,
-      {
-        $set: req.body,
-      },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json(updatedUser);
+    let userInfo, accessToken;
+    userInfo = await User.findOne({ email: email }); //db will return all userdata if there any
+
+    if (userInfo === null) {
+      // user not registered || so reister
+      const newUser = new User(req.body);
+      userInfo = await newUser.save();
+
+      accessToken = jwt.sign({ userInfo }, process.env.JWT_KEY, {
+        expiresIn: "30d",
+      });
+      res.status(200).json({ authorization: accessToken, user: userInfo });
+    } else if (userInfo?.userId === userId) {
+      accessToken = jwt.sign({ userInfo }, process.env.JWT_KEY, {
+        expiresIn: "30d",
+      });
+      // console.log(accessToken);
+      res.status(200).json({ authorization: accessToken, user: userInfo });
+    } else res.status(500).json({ msg: "wrong credentials user not found" });
   } catch (err) {
-    res.status(500).json({ error: err, msg: "opps..! Error" });
+    res.status(500).json({ error: err, msg: "user information not found" });
   }
 };
 
-//delete
-const deleteUser = async (req, res) => {
-  const _id = req.query._id;
-  if (!_id) res.status(400).json({ msg: "_id not provided" });
-  try {
-    await User.findByIdAndDelete(_id);
-    res.status(200).json({ msg: "user deleted.." });
-  } catch (err) {
-    res.status(500).json({ error: err, msg: "opps..! Error" });
-  }
-};
+// //delete
+// const deleteUser = async (req, res) => {
+//   const _id = req.query._id;
+//   if (!_id) res.status(400).json({ msg: "_id not provided" });
+//   try {
+//     await User.findByIdAndDelete(_id);
+//     res.status(200).json({ msg: "user deleted.." });
+//   } catch (err) {
+//     res.status(500).json({ error: err, msg: "opps..! Error" });
+//   }
+// };
 
 //get
-const getUser = async (req, res) => {
-  const qemail = req.query.email || "";
-  const _id = req.query._id;
+// const getUser = async (req, res) => {
+//   const qemail = req.query.email || "";
+//   const _id = req.query._id;
 
-  const qpage = parseInt(req.query.page) || 0;
-  const qlimit = parseInt(req.query.limit) || 30;
-  try {
-    let fetchedData;
+//   const qpage = parseInt(req.query.page) || 0;
+//   const qlimit = parseInt(req.query.limit) || 30;
+//   try {
+//     let fetchedData;
 
-    if (_id) {
-      fetchedData = await User.findById(_id);
-    } else if (qemail) {
-      fetchedData = await User.find({ email: qemail });
-    } else {
-      fetchedData = await User.find({})
-        .sort({ createdAt: -1 })
-        .skip(qpage * qlimit)
-        .limit(qlimit);
-    }
+//     if (_id) {
+//       fetchedData = await User.findById(_id);
+//     } else if (qemail) {
+//       fetchedData = await User.find({ email: qemail });
+//     } else {
+//       fetchedData = await User.find({})
+//         .sort({ createdAt: -1 })
+//         .skip(qpage * qlimit)
+//         .limit(qlimit);
+//     }
 
-    // console.log(fetchedData);
-    res.status(200).json(fetchedData);
-  } catch (err) {
-    res.status(500).json({ error: err, msg: "opps..! Error" });
-  }
+//     // console.log(fetchedData);
+//     res.status(200).json(fetchedData);
+//   } catch (err) {
+//     res.status(500).json({ error: err, msg: "opps..! Error" });
+// }
+// };
+
+module.exports = {
+  registerUser,
+  loginUser,
+  loginOrRegister,
+  // updateUser,
+  // deleteUser,
+  // getUser,
 };
-
-module.exports = { registerUser, loginUser, updateUser, deleteUser, getUser };
