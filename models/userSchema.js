@@ -37,6 +37,11 @@ const UserSchema = new mongoose.Schema(
         },
       },
     ],
+    review: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );
