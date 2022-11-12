@@ -29,6 +29,19 @@ const UserSchema = new mongoose.Schema(
       enum: ["admin", "user"],
       default: "user",
     },
+    address: {
+      type: String,
+    },
+    socialLinks: [
+      {
+        key: {
+          type: String,
+        },
+        value: {
+          type: String,
+        },
+      },
+    ],
     wishlist: [
       {
         productId: {
@@ -39,7 +52,12 @@ const UserSchema = new mongoose.Schema(
     ],
     review: [
       {
-        type: String,
+        rating: {
+          type: Number,
+        },
+        text: {
+          type: String,
+        },
       },
     ],
   },
