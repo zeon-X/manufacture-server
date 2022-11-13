@@ -10,7 +10,8 @@ const verifyToken = (req, res, next) => {
     jwt.verify(token, process.env.JWT_KEY, (err, user) => {
       if (err) res.status(403).json({ msg: "Token invalid", error: err });
       else {
-        req.user = user;
+        // console.log(user);
+        req.user = user?.userInfo;
         next();
       }
     });
@@ -21,15 +22,20 @@ const verifyToken = (req, res, next) => {
 
 //MIDDLE WIRE INSIDE MIDDLEWIRE || Authorization
 const verifyTokenAndAdmin = (req, res, next) => {
+  // console.log(req || "not found");
   verifyToken(req, res, () => {
-    if (req.user.status === "admin") next();
+    if (req.user.role === "admin") next();
     else res.status(403).json("Opps...! you don't have access");
   });
 };
 
 const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user._id === req.query._id || req.user.status === "admin") {
+    let userId = req?.query?.userId || req?.query?._id;
+
+    // console.log(userId);
+
+    if (req.user._id === userId || req.user.role === "admin") {
       // console.log("executed");
       next();
     } else res.status(403).json("Opps...! you don't have access");

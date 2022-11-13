@@ -5,6 +5,7 @@ const {
   getReviewStats,
   getAllReviews,
   getReviewById,
+  getReviewByUserId,
 } = require("../controllers/reviewController");
 const {
   verifyTokenAndAuthorization,
@@ -16,6 +17,7 @@ const router = require("express").Router();
 router.post("/create", verifyToken, createReview);
 router.put("/update", verifyTokenAndAuthorization, updateReview);
 router.delete("/delete", verifyTokenAndAuthorization, deleteReview);
+router.get("/get-by-userId", verifyTokenAndAuthorization, getReviewByUserId);
 router.get("/find", getReviewById);
 router.get("/get", getAllReviews);
 router.get("/stats", verifyTokenAndAdmin, getReviewStats);

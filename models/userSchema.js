@@ -18,9 +18,11 @@ const UserSchema = new mongoose.Schema(
     profile_pic: {
       type: String,
     },
-    education: {
-      type: Array,
-    },
+    education: [
+      {
+        type: String,
+      },
+    ],
     phone: {
       type: String,
     },
@@ -47,16 +49,6 @@ const UserSchema = new mongoose.Schema(
         productId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
-        },
-      },
-    ],
-    review: [
-      {
-        rating: {
-          type: Number,
-        },
-        text: {
-          type: String,
         },
       },
     ],

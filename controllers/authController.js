@@ -39,6 +39,7 @@ const loginUser = async (req, res) => {
 const loginOrRegister = async (req, res) => {
   const email = req.body.email;
   const userId = req.body.userId;
+  // console.log(req.body);
   try {
     let userInfo, accessToken;
     userInfo = await User.findOne({ email: email }); //db will return all userdata if there any

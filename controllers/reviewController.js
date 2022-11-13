@@ -46,14 +46,14 @@ const getAllReviews = async (req, res) => {
   const qpage = req.query.page || 0;
   const qlimit = req.query.limit || 30;
   try {
-    let Reviews;
+    let review;
 
-    Reviews = await Review.find()
+    review = await Review.find()
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
 
-    res.status(200).json(Reviews);
+    res.status(200).json(review);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -63,8 +63,20 @@ const getAllReviews = async (req, res) => {
 const getReviewById = async (req, res) => {
   if (!req.query._id) res.status(500).json({ msg: "provide an Review _id" });
   try {
-    let Review = await Review.findById(req.query._id);
-    res.status(200).json(Review);
+    let review = await Review.findById(req.query._id);
+    res.status(200).json(review);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+//get Review
+const getReviewByUserId = async (req, res) => {
+  if (!req.query._id) res.status(500).json({ msg: "provide an user _id" });
+  try {
+    let review = await Review.find({ userId: req.query._id });
+    // console.log(review);
+    res.status(200).json(review);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -106,4 +118,5 @@ module.exports = {
   getAllReviews,
   getReviewById,
   getReviewStats,
+  getReviewByUserId,
 };

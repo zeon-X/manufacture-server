@@ -6,6 +6,7 @@ const {
   getAllUsers,
   getUserById,
   updateWishlist,
+  updateAdmin,
 } = require("../controllers/userController");
 const {
   verifyTokenAndAdmin,
@@ -19,6 +20,7 @@ router.put("/update-wish-list", verifyTokenAndAuthorization, updateWishlist);
 router.get("/find", verifyTokenAndAuthorization, getUserById);
 
 // admin
+router.put("/make-admin", verifyTokenAndAdmin, updateAdmin);
 router.post("/create", verifyTokenAndAdmin, createUser);
 router.delete("/delete", verifyTokenAndAdmin, deleteUser);
 router.get("/get", verifyTokenAndAdmin, getAllUsers);

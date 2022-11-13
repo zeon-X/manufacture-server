@@ -44,29 +44,35 @@ const deleteOrder = async (req, res) => {
 //GET BY ID // it will take user id
 const getOrderByUserId = async (req, res) => {
   if (!req.query._id) res.status(500).json({ msg: "provide a user _id" });
+
   try {
-    const Orders = await Order.find({ userId: req.query._id }).populate(
-      "products.productId"
+    const forders = await Order.find({ userId: req.query._id }).populate(
+      "productId"
     );
-    res.status(200).json(Orders);
+    // console.log(forders);
+    res.status(200).json(forders);
   } catch (err) {
     res.status(500).json({ error: err });
   }
 };
+
+// populate(
+//   "products.productId"
+// );
 
 //Order All
 const getAllOrders = async (req, res) => {
   const qpage = req.query.page || 0;
   const qlimit = req.query.limit || 30;
   try {
-    let Orders;
+    let forders;
 
-    Orders = await Order.find()
+    forders = await Order.find()
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
 
-    res.status(200).json(Orders);
+    res.status(200).json(forders);
   } catch (err) {
     res.status(500).json(err);
   }

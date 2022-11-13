@@ -8,24 +8,22 @@ const OrderSchema = new mongoose.Schema(
       // type: String,
       required: true,
     },
-    products: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
-      },
-    ],
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+
     amount: {
       type: Number,
       required: true,
     },
-    receiver_name: {
+    buyer_name: {
       type: String,
       required: true,
     },
@@ -37,7 +35,6 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       enum: ["unpaid", "paid"],
       default: "unpaid",
-      required: true,
     },
     status: {
       type: String,

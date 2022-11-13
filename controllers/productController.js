@@ -45,15 +45,16 @@ const deleteProduct = async (req, res) => {
 const getAllProducts = async (req, res) => {
   const qpage = req.query.page || 0;
   const qlimit = req.query.limit || 30;
+  // console.log(qlimit);
   try {
-    let Products;
+    let fproduct;
 
-    Products = await Product.find()
+    fproduct = await Product.find()
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
 
-    res.status(200).json(Products);
+    res.status(200).json(fproduct);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -63,8 +64,8 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   if (!req.query._id) res.status(500).json({ msg: "provide an product _id" });
   try {
-    let Product = await Product.findById(req.query._id);
-    res.status(200).json(Product);
+    let fproduct = await Product.findById(req.query._id);
+    res.status(200).json(fproduct);
   } catch (err) {
     res.status(500).json(err);
   }

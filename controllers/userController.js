@@ -26,7 +26,7 @@ const updateUser = async (req, res) => {
     );
     res.status(200).json(updatedUser);
   } catch (err) {
-    res.status(500).json({ error: err, msg: "opps..! Error" });
+    res.status(500).json({ err, msg: "opps..! Error" });
   }
 };
 
@@ -47,7 +47,28 @@ const updateWishlist = async (req, res) => {
     );
     res.status(200).json(updatedWishList);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ err, msg: "user not found" });
+  }
+};
+
+// update admin
+const updateAdmin = async (req, res) => {
+  if (!req.query._id) res.status(500).json({ msg: "provide an User _id" });
+  try {
+    const updatedWishList = await User.findByIdAndUpdate(
+      req.query._id,
+      {
+        $set: {
+          role: "admin",
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(updatedWishList);
+  } catch (err) {
+    res.status(500).json({ err, msg: "user not found" });
   }
 };
 
@@ -58,7 +79,7 @@ const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(req.query._id);
     res.status(200).json({ msg: "User has been deleted.." });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ err, msg: "user not found" });
   }
 };
 
@@ -67,14 +88,14 @@ const getAllUsers = async (req, res) => {
   const qpage = req.query.page || 0;
   const qlimit = req.query.limit || 30;
   try {
-    let Users;
+    let users;
 
-    Users = await User.find()
+    users = await User.find()
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
-
-    res.status(200).json(Users);
+    console.log(users);
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -84,10 +105,13 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   if (!req.query._id) res.status(500).json({ msg: "provide an User _id" });
   try {
-    let User = await User.findById(req.query._id);
-    res.status(200).json(User);
+    let userdata;
+    userdata = await User.findById(req.query._id);
+    // console.log(userdata);
+    res.status(200).json(userdata);
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 };
 
@@ -128,4 +152,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   getUserStats,
+  updateAdmin,
 };
