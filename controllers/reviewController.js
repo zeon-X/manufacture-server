@@ -49,6 +49,7 @@ const getAllReviews = async (req, res) => {
     let review;
 
     review = await Review.find()
+      .populate("userId")
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
