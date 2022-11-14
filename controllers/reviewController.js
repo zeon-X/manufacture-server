@@ -82,6 +82,18 @@ const getReviewByUserId = async (req, res) => {
   }
 };
 
+//get Review email
+const getReviewByEmail = async (req, res) => {
+  if (!req.query.email) res.status(500).json({ msg: "provide an user email" });
+  try {
+    let review = await Review.find({ email: req.query.email });
+    // console.log(review);
+    res.status(200).json(review);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 //Review STATS
 const getReviewStats = async (req, res) => {
   const date = new Date();
@@ -119,4 +131,5 @@ module.exports = {
   getReviewById,
   getReviewStats,
   getReviewByUserId,
+  getReviewByEmail,
 };

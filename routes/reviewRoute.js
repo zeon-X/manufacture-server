@@ -6,6 +6,7 @@ const {
   getAllReviews,
   getReviewById,
   getReviewByUserId,
+  getReviewByEmail,
 } = require("../controllers/reviewController");
 const {
   verifyTokenAndAuthorization,
@@ -18,7 +19,8 @@ router.post("/create", verifyToken, createReview);
 router.put("/update", verifyTokenAndAuthorization, updateReview);
 router.delete("/delete", verifyTokenAndAuthorization, deleteReview);
 router.get("/get-by-userId", verifyTokenAndAuthorization, getReviewByUserId);
-router.get("/find", getReviewById);
+router.get("/find", verifyTokenAndAuthorization, getReviewById);
+router.get("/find-by-email", getReviewByEmail);
 router.get("/get", getAllReviews);
 router.get("/stats", verifyTokenAndAdmin, getReviewStats);
 

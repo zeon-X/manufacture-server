@@ -14,6 +14,9 @@ const ReviewSchema = new mongoose.Schema(
     comment: {
       type: String,
     },
+    email: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

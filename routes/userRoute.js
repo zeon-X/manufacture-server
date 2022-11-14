@@ -7,6 +7,7 @@ const {
   getUserById,
   updateWishlist,
   updateAdmin,
+  getUserByEmail,
 } = require("../controllers/userController");
 const {
   verifyTokenAndAdmin,
@@ -18,6 +19,7 @@ const router = require("express").Router();
 router.put("/update", verifyTokenAndAuthorization, updateUser);
 router.put("/update-wish-list", verifyTokenAndAuthorization, updateWishlist);
 router.get("/find", verifyTokenAndAuthorization, getUserById);
+router.get("/find-by-email", verifyTokenAndAuthorization, getUserByEmail);
 
 // admin
 router.put("/make-admin", verifyTokenAndAdmin, updateAdmin);

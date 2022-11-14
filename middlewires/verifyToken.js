@@ -31,11 +31,15 @@ const verifyTokenAndAdmin = (req, res, next) => {
 
 const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
-    let userId = req?.query?.userId || req?.query?._id;
+    // console.log(req.user.email);
+    // console.log(req.query.email);
 
-    // console.log(userId);
-
-    if (req.user._id === userId || req.user.role === "admin") {
+    if (
+      req?.user?._id === req?.query?.userId ||
+      req?.user?._id === req?.query?._id ||
+      req?.user?.email === req?.query?.email ||
+      req?.user?.role === "admin"
+    ) {
       // console.log("executed");
       next();
     } else res.status(403).json("Opps...! you don't have access");

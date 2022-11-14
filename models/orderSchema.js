@@ -27,6 +27,9 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+    },
     address: {
       type: Object,
       reuired: true,

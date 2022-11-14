@@ -94,7 +94,7 @@ const getAllUsers = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
-    console.log(users);
+    // console.log(users);
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json(err);
@@ -107,6 +107,20 @@ const getUserById = async (req, res) => {
   try {
     let userdata;
     userdata = await User.findById(req.query._id);
+    // console.log(userdata);
+    res.status(200).json(userdata);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+};
+
+//get User
+const getUserByEmail = async (req, res) => {
+  if (!req.query.email) res.status(500).json({ msg: "provide an email" });
+  try {
+    let userdata;
+    userdata = await User.find({ email: req?.query?.email });
     // console.log(userdata);
     res.status(200).json(userdata);
   } catch (err) {
@@ -153,4 +167,5 @@ module.exports = {
   getUserById,
   getUserStats,
   updateAdmin,
+  getUserByEmail,
 };

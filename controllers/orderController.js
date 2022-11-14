@@ -68,6 +68,8 @@ const getAllOrders = async (req, res) => {
     let forders;
 
     forders = await Order.find()
+      .populate("productId")
+      .populate("userId")
       .sort({ createdAt: -1 })
       .skip(qpage * qlimit)
       .limit(qlimit);
