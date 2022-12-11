@@ -35,7 +35,7 @@ app.use("/api/cart", cartRoute);
 app.use("/api/review", reviewRoute);
 
 app.get("/", (req, res) => {
-  res.status(200).json({ msg: "Welcome to the menufaturer-server" });
+  res.status(200).json({ msg: "Welcome to the menufaturer-server updated" });
 });
 
 app.listen(PORT, () => {
